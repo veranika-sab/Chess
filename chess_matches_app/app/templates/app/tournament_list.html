@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src='{{ STATIC_URL}}js/jquery.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL}}js/paginator.js'></script>
+<script src="{{STATIC_URL}}bootstrap-paginator-master/src/bootstrap-paginator.js"></script>
+
+
+<h3>Турниры </h3>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Название</th>
+        <th>Количество игроков</th>
+        <th>Количество призовых мест</th>
+        <th>Количество туров</th>
+        <th>Статус</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <div id="content">
+        {% for tournament in tournament_list %}
+            <tr class="success">
+                <td>{{ tournament.id }}</td>
+                <td><a href="/tournaments/{{ tournament.id }}">{{ tournament.name }}</a></td>
+                <td>{{ tournament.players.count }}</td>
+                <td>{{ tournament.prizes_amount }}</td>
+                <td>{{ tournament.tours_amount }}</td>
+                {% if tournament.is_finished %}
+                <td>Завершен</td>
+                {% else %}
+                <td>Не завершен</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <div class="pagination">
+            <span class="page-links">
+
+                {% if page_obj.has_previous %}
+                    <a id="previous" href="/tournaments/ajax/?page={{ page_obj.previous_page_number }}">previous</a>
+                {% else %}
+                    <a id="previous" hidden="True" href="/tournaments/ajax/?page=0">previous</a>
+                {% endif %}
+                    Page <span class="page-current">{{ page_obj.number }}</span> of <span class="page-amount">{{ page_obj.paginator.num_pages }}</span>.
+                {% if page_obj.has_next %}
+                    <a id="next" href="/tournaments/ajax/?page={{ page_obj.next_page_number }}">next</a>
+                {% else %}
+                    <a id="next" hidden="True" href="/tournaments/ajax/?page=None">next</a>
+                {% endif %}
+            </span>
+    </div>
+    {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}

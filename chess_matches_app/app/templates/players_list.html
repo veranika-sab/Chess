@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src='{{ STATIC_URL}}js/paginator.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL}}js/jquery.js'></script>
+
+{% for player in players %}
+{# Each "contact" is a Contact model object. #}
+{{ player.name }}<br />
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if players.has_previous %}
+            <a href="?page={{ players.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ players.number }} of {{ players.paginator.num_pages }}.
+        </span>
+
+        {% if players.has_next %}
+            <a href="?page={{ players.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

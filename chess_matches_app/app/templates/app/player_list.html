@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script type="text/javascript" src='{{ STATIC_URL}}js/jquery.js'></script>
+<script type="text/javascript" src='{{ STATIC_URL}}js/paginator.js'></script>
+<script src="{{STATIC_URL}}bootstrap-paginator-master/src/bootstrap-paginator.js"></script>
+
+
+<h3>Игроки </h3>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Имя</th>
+        <th>Рейтинг</th>
+        <th>Количество турниров</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <div id="content">
+        {% for player in player_list %}
+        <tr class="success">
+            <td>{{ player.id }}</td>
+            <td>{{ player.name }}</a></td>
+            <td>{{ player.elo_rating }}</td>
+            <td>{{ player.tournaments_amount }}</td>
+        </tr>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <div class="pagination">
+            <span class="page-links">
+
+                {% if page_obj.has_previous %}
+                    <a id="previous" href="/players/ajax/?page={{ page_obj.previous_page_number }}">previous</a>
+                {% else %}
+                    <a id="previous" hidden="True" href="/players/ajax/?page=0">previous</a>
+                {% endif %}
+                    Page <span class="page-current">{{ page_obj.number }}</span> of <span class="page-amount">{{ page_obj.paginator.num_pages }}</span>.
+                {% if page_obj.has_next %}
+                    <a id="next" href="/players/ajax/?page={{ page_obj.next_page_number }}">next</a>
+                {% else %}
+                    <a id="next" hidden="True" href="/players/ajax/?page=None">next</a>
+                {% endif %}
+            </span>
+    </div>
+    {% endif %}
+    </tbody>
+</table>
+
+{% endblock %}
